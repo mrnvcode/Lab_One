@@ -1,4 +1,3 @@
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -17,11 +16,11 @@ public class CurrencyConverterController {
     @FXML
     private TextField convertedAmountTextField;
 
-    private static final double USD_TO_EGP = 0.23;
-    private static final double USD_TO_YEN = 0.20;
-    private static final double USD_TO_INR = 75.25;
-    private static final double USD_TO_GBP = 0.71;
-    private static final double USD_TO_EURO = 0.82;
+    private static final double USD_TO_EGP = 30.85;
+    private static final double USD_TO_YEN = 136.99;
+    private static final double USD_TO_INR = 82.38;
+    private static final double USD_TO_GBP = 0.80;
+    private static final double USD_TO_EURO = 0.92;
 
     @FXML
     private void initialize() {
@@ -39,39 +38,49 @@ public class CurrencyConverterController {
 
             double convertedAmount;
             if (sourceCurrency.equals("USD")) {
-                if (targetCurrency.equals("EGP")) {
-                    convertedAmount = amount * USD_TO_EGP;
-                } else if (targetCurrency.equals("YEN")) {
-                    convertedAmount = amount * USD_TO_YEN;
-                } else if (targetCurrency.equals("INR")) {
-                    convertedAmount = amount * USD_TO_INR;
-                } else if (targetCurrency.equals("GBP")) {
-                    convertedAmount = amount * USD_TO_GBP;
-                } else if (targetCurrency.equals("EURO")) {
-                    convertedAmount = amount * USD_TO_EURO;
-                } else {
-                    convertedAmount = amount;
-                }
+                convertedAmount = convertUSDtoNonUSD(amount, targetCurrency);
             } else if (targetCurrency.equals("USD")) {
-                if (sourceCurrency.equals("EGP")) {
-                    convertedAmount = amount / USD_TO_EGP;
-                } else if (sourceCurrency.equals("YEN")) {
-                    convertedAmount = amount / USD_TO_YEN;
-                } else if (sourceCurrency.equals("INR")) {
-                    convertedAmount = amount / USD_TO_INR;
-                } else if (sourceCurrency.equals("GBP")) {
-                    convertedAmount = amount / USD_TO_GBP;
-                } else if (sourceCurrency.equals("EURO")) {
-                    convertedAmount = amount / USD_TO_EURO;
-                } else {
-                    convertedAmount = amount;
-                }
+                convertedAmount = convertNonUSDToUSD(amount, sourceCurrency);
             } else {
-                // Conversion between non-USD currencies is not supported in this example
-                convertedAmount = 0;
+                double amountInUSD = convertNonUSDToUSD(amount, sourceCurrency);
+                convertedAmount = convertUSDtoNonUSD(amountInUSD, targetCurrency);
             }
 
             convertedAmountTextField.setText(String.valueOf(convertedAmount));
+        }
+    }
+
+    private double convertUSDtoNonUSD(double amount, String targetCurrency) {
+        switch (targetCurrency) {
+            case "EGP":
+                return amount * USD_TO_EGP;
+            case "YEN":
+                return amount * USD_TO_YEN;
+            case "INR":
+                return amount * USD_TO_INR;
+            case "GBP":
+                return amount * USD_TO_GBP;
+            case "EURO":
+                return amount * USD_TO_EURO;
+            default:
+                return amount;
+        }
+    }
+
+    private double convertNonUSDToUSD(double amount, String sourceCurrency) {
+        switch (sourceCurrency) {
+            case "EGP":
+                return amount / USD_TO_EGP;
+            case "YEN":
+                return amount / USD_TO_YEN;
+            case "INR":
+                return amount / USD_TO_INR;
+            case "GBP":
+                return amount / USD_TO_GBP;
+            case "EURO":
+                return amount / USD_TO_EURO;
+            default:
+                return amount;
         }
     }
 }
